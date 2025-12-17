@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const keywordPriority = document.getElementById('keywordPriority');
   const actionWhatsApp = document.getElementById('actionWhatsApp');
   const actionEmail = document.getElementById('actionEmail');
+  const keywordWhatsappNumber = document.getElementById('keywordWhatsappNumber');
+  const keywordCustomMessage = document.getElementById('keywordCustomMessage');
   const addKeywordBtn = document.getElementById('addKeyword');
   
   const whatsappList = document.getElementById('whatsappList');
@@ -100,20 +102,30 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    keywordList.innerHTML = keywords.map((kw, index) => `
-      <div class="keyword-item">
-        <div class="keyword-info">
-          <span class="keyword-text">${kw.text}</span>
-          <span class="priority-badge priority-${kw.priority}">
-            ${kw.priority === 'high' ? 'Alta' : kw.priority === 'medium' ? 'Media' : 'Baja'}
-          </span>
-          <div class="keyword-actions">
-            Acciones: ${kw.actions.join(', ')}
+    keywordList.innerHTML = keywords.map((kw, index) => {
+      let details = `Acciones: ${kw.actions.join(', ')}`;
+      if (kw.whatsappNumber) {
+        details += ` | WhatsApp: ${kw.whatsappNumber}`;
+      }
+      if (kw.customMessage) {
+        details += ` | Mensaje personalizado: "${kw.customMessage.substring(0, 30)}${kw.customMessage.length > 30 ? '...' : ''}"`;
+      }
+      
+      return `
+        <div class="keyword-item">
+          <div class="keyword-info">
+            <span class="keyword-text">${kw.text}</span>
+            <span class="priority-badge priority-${kw.priority}">
+              ${kw.priority === 'high' ? 'Alta' : kw.priority === 'medium' ? 'Media' : 'Baja'}
+            </span>
+            <div class="keyword-actions">
+              ${details}
+            </div>
           </div>
+          <button class="btn-remove" data-index="${index}">Eliminar</button>
         </div>
-        <button class="btn-remove" data-index="${index}">Eliminar</button>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     // Agregar event listeners a botones de eliminar
     keywordList.querySelectorAll('.btn-remove').forEach(btn => {
@@ -177,6 +189,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
+    // Validar número de WhatsApp si se proporcionó
+    const customNumber = keywordWhatsappNumber.value.trim();
+    if (customNumber && !customNumber.match(/^\+?\d{10,15}$/)) {
+      showNotification('Formato de número inválido. Usa: +5491112345678', 'error');
+      return;
+    }
+
     try {
       const data = await chrome.storage.sync.get(['keywords']);
       const keywords = data.keywords || [];
@@ -187,17 +206,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
 
-      keywords.push({
+      const newKeywordObj = {
         text: keyword,
         actions: actions,
-        priority: keywordPriority.value
-      });
+        priority: keywordPriority.value,
+        whatsappNumber: customNumber || null,
+        customMessage: keywordCustomMessage.value.trim() || null
+      };
+
+      keywords.push(newKeywordObj);
 
       await chrome.storage.sync.set({ keywords });
       renderKeywords(keywords);
       
       // Limpiar campos
       newKeyword.value = '';
+      keywordWhatsappNumber.value = '';
+      keywordCustomMessage.value = '';
       showNotification('Palabra clave agregada', 'success');
     } catch (error) {
       console.error('Error agregando keyword:', error);

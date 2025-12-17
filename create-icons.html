@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Íconos - Sale Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 { color: #667eea; }
+        canvas {
+            border: 2px solid #ddd;
+            margin: 10px;
+            background: white;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .success {
+            background: #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        .instructions {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .icon-preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Generador de Íconos - Sale Assistant</h1>
+        
+        <div class="instructions">
+            <strong>📋 Instrucciones:</strong>
+            <ol>
+                <li>Haz clic en "Generar Íconos"</li>
+                <li>Click derecho en cada ícono → "Guardar imagen como..."</li>
+                <li>Guarda con el nombre exacto: <code>icon16.png</code>, <code>icon48.png</code>, <code>icon128.png</code></li>
+                <li>Guárdalos en la carpeta: <code>icons/</code></li>
+                <li>Recarga la extensión en Chrome</li>
+            </ol>
+        </div>
+
+        <button onclick="generateIcons()">🎨 Generar Íconos</button>
+        <button onclick="downloadAll()">⬇️ Descargar Todos</button>
+
+        <div id="preview" class="icon-preview"></div>
+
+        <div id="success" class="success">
+            ✅ ¡Íconos generados! Haz click derecho en cada uno y guárdalos en la carpeta <code>icons/</code>
+        </div>
+    </div>
+
+    <script>
+        function generateIcons() {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+
+            // Configuración de íconos
+            const sizes = [
+                { size: 16, name: 'icon16.png' },
+                { size: 48, name: 'icon48.png' },
+                { size: 128, name: 'icon128.png' }
+            ];
+
+            sizes.forEach(config => {
+                const container = document.createElement('div');
+                container.style.textAlign = 'center';
+
+                const canvas = document.createElement('canvas');
+                canvas.width = config.size;
+                canvas.height = config.size;
+                canvas.style.width = config.size + 'px';
+                canvas.style.height = config.size + 'px';
+
+                const ctx = canvas.getContext('2d');
+
+                // Gradiente de fondo
+                const gradient = ctx.createLinearGradient(0, 0, config.size, config.size);
+                gradient.addColorStop(0, '#667eea');
+                gradient.addColorStop(1, '#764ba2');
+                ctx.fillStyle = gradient;
+
+                // Bordes redondeados
+                const radius = config.size * 0.15;
+                ctx.beginPath();
+                ctx.moveTo(radius, 0);
+                ctx.lineTo(config.size - radius, 0);
+                ctx.quadraticCurveTo(config.size, 0, config.size, radius);
+                ctx.lineTo(config.size, config.size - radius);
+                ctx.quadraticCurveTo(config.size, config.size, config.size - radius, config.size);
+                ctx.lineTo(radius, config.size);
+                ctx.quadraticCurveTo(0, config.size, 0, config.size - radius);
+                ctx.lineTo(0, radius);
+                ctx.quadraticCurveTo(0, 0, radius, 0);
+                ctx.closePath();
+                ctx.fill();
+
+                // Texto "SA"
+                ctx.fillStyle = 'white';
+                ctx.font = `bold ${config.size * 0.4}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('SA', config.size / 2, config.size / 2);
+
+                const label = document.createElement('p');
+                label.textContent = config.name;
+                label.style.marginTop = '5px';
+                label.style.fontWeight = 'bold';
+
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = '⬇️ Descargar';
+                downloadBtn.style.fontSize = '12px';
+                downloadBtn.style.padding = '8px 15px';
+                downloadBtn.onclick = () => downloadCanvas(canvas, config.name);
+
+                container.appendChild(canvas);
+                container.appendChild(label);
+                container.appendChild(downloadBtn);
+                preview.appendChild(container);
+            });
+
+            document.getElementById('success').style.display = 'block';
+        }
+
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function downloadAll() {
+            const canvases = document.querySelectorAll('canvas');
+            const names = ['icon16.png', 'icon48.png', 'icon128.png'];
+            
+            canvases.forEach((canvas, index) => {
+                setTimeout(() => {
+                    downloadCanvas(canvas, names[index]);
+                }, index * 300);
+            });
+        }
+
+        // Generar automáticamente al cargar
+        window.onload = generateIcons;
+    </script>
+</body>
+</html>
+

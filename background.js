@@ -44,11 +44,41 @@ class SaleAssistant {
 
     this.config = {
       keywords: data.keywords || [
-        { text: 'urgente', actions: ['whatsapp', 'email'], priority: 'high' },
-        { text: 'cotización', actions: ['email'], priority: 'medium' },
-        { text: 'comprar', actions: ['whatsapp'], priority: 'high' },
-        { text: 'precio', actions: ['whatsapp'], priority: 'medium' },
-        { text: 'presupuesto', actions: ['email'], priority: 'medium' }
+        { 
+          text: 'urgente', 
+          actions: ['whatsapp', 'email'], 
+          priority: 'high',
+          whatsappNumber: null, // null = usar número por defecto
+          customMessage: null // null = usar mensaje estándar
+        },
+        { 
+          text: 'cotización', 
+          actions: ['email'], 
+          priority: 'medium',
+          whatsappNumber: null,
+          customMessage: null
+        },
+        { 
+          text: 'comprar', 
+          actions: ['whatsapp'], 
+          priority: 'high',
+          whatsappNumber: null,
+          customMessage: null
+        },
+        { 
+          text: 'precio', 
+          actions: ['whatsapp'], 
+          priority: 'medium',
+          whatsappNumber: null,
+          customMessage: null
+        },
+        { 
+          text: 'presupuesto', 
+          actions: ['email'], 
+          priority: 'medium',
+          whatsappNumber: null,
+          customMessage: null
+        }
       ],
       whatsappNumbers: data.whatsappNumbers || [],
       emailAddresses: data.emailAddresses || [],
@@ -294,32 +324,30 @@ class SaleAssistant {
   }
 
   async executeActions(matches, formData, tab) {
-    // Recopilar todas las acciones únicas
-    const actions = new Set();
-    matches.forEach(match => {
-      match.actions.forEach(action => actions.add(action));
-    });
-
-    // Preparar el mensaje
-    const message = this.formatMessage(matches, formData, tab);
+    // Preparar el mensaje estándar
+    const standardMessage = this.formatMessage(matches, formData, tab);
 
     // Esperar el delay configurado
     if (this.config.actionDelay > 0) {
       await this.sleep(this.config.actionDelay * 1000);
     }
 
-    // Ejecutar cada acción
-    for (const action of actions) {
+    // Ejecutar acciones para cada match (permite números y mensajes específicos por keyword)
+    for (const match of matches) {
       try {
-        if (action === 'whatsapp') {
-          await this.sendWhatsApp(message);
-          this.stats.actionsExecuted++;
-        } else if (action === 'email') {
-          await this.sendEmail(message, formData);
-          this.stats.actionsExecuted++;
+        // Ejecutar cada acción del match
+        for (const action of match.actions) {
+          if (action === 'whatsapp') {
+            // Pasar el match completo para acceder a número y mensaje personalizados
+            await this.sendWhatsApp(standardMessage, match);
+            this.stats.actionsExecuted++;
+          } else if (action === 'email') {
+            await this.sendEmail(standardMessage, formData);
+            this.stats.actionsExecuted++;
+          }
         }
       } catch (error) {
-        console.error(`[Sale Assistant] Error ejecutando acción ${action}:`, error);
+        console.error(`[Sale Assistant] Error ejecutando acciones para "${match.keyword}":`, error);
       }
     }
 
@@ -347,14 +375,28 @@ class SaleAssistant {
     return message;
   }
 
-  async sendWhatsApp(message) {
-    if (this.config.whatsappNumbers.length === 0) {
+  async sendWhatsApp(message, match = null) {
+    // Si el match tiene un número específico, usarlo; sino usar el primero configurado
+    let targetNumber = null;
+    
+    if (match && match.whatsappNumber) {
+      targetNumber = match.whatsappNumber;
+      console.log(`[Sale Assistant] Usando número específico para keyword "${match.keyword}": ${targetNumber}`);
+    } else if (this.config.whatsappNumbers.length > 0) {
+      targetNumber = this.config.whatsappNumbers[0];
+    } else {
       console.warn('[Sale Assistant] No hay números de WhatsApp configurados');
       throw new Error('No hay números de WhatsApp configurados');
     }
 
-    // Tomar el primer número configurado
-    const number = this.cleanPhoneNumber(this.config.whatsappNumbers[0]);
+    // Usar mensaje personalizado si existe
+    let finalMessage = message;
+    if (match && match.customMessage) {
+      finalMessage = match.customMessage;
+      console.log(`[Sale Assistant] Usando mensaje personalizado para keyword "${match.keyword}"`);
+    }
+
+    const number = this.cleanPhoneNumber(targetNumber);
     
     // Validar número
     if (!this.isValidPhoneNumber(number)) {
@@ -362,7 +404,7 @@ class SaleAssistant {
     }
     
     // Codificar el mensaje para URL
-    const encodedMessage = encodeURIComponent(message);
+    const encodedMessage = encodeURIComponent(finalMessage);
     
     // Crear URL de WhatsApp
     const whatsappUrl = `https://wa.me/${number}?text=${encodedMessage}`;
