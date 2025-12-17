@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Completa - Sale Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .instructions {
+            background: #fffbeb;
+            border: 3px solid #fbbf24;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .instructions h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #78350f;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .test-section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .test-keywords {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .test-keywords h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .keyword-tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .expected-result {
+            background: #dcfce7;
+            border: 2px solid #10b981;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .expected-result h3 {
+            color: #065f46;
+            margin-bottom: 15px;
+        }
+
+        .expected-result ul {
+            margin-left: 20px;
+            color: #047857;
+        }
+
+        .expected-result li {
+            margin: 8px 0;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.green {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .test-footer {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .test-footer button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .test-footer button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .header, .test-section, .test-footer {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Prueba Completa de Sale Assistant</h1>
+            <p>Formulario de prueba para verificar detección de keywords, WhatsApp y Email</p>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Instrucciones de Prueba</h3>
+            <ol>
+                <li><strong>Configura primero:</strong> Ve a la extensión → Configuración y agrega:
+                    <ul style="margin-top: 8px;">
+                        <li>Palabras clave: "urgente", "cotización", "comprar"</li>
+                        <li>Tu número de WhatsApp</li>
+                        <li>Tu email</li>
+                    </ul>
+                </li>
+                <li><strong>Escribe en el formulario:</strong> Usa las palabras clave sugeridas</li>
+                <li><strong>Espera 1-2 segundos</strong> después de escribir</li>
+                <li><strong>Observa:</strong> Debería aparecer notificación y abrirse WhatsApp/Email</li>
+            </ol>
+        </div>
+
+        <form>
+            <div class="test-section">
+                <h2>📝 Test 1: Formulario de Contacto Básico</h2>
+                
+                <div class="test-keywords">
+                    <h4>💡 Palabras clave para probar:</h4>
+                    <span class="keyword-tag">urgente</span>
+                    <span class="keyword-tag">cotización</span>
+                    <span class="keyword-tag">comprar</span>
+                    <span class="keyword-tag">precio</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" name="nombre" placeholder="Juan Pérez">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="juan@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Mensaje (Escribe aquí las palabras clave)</label>
+                    <textarea name="mensaje" placeholder="Ejemplo: Necesito una cotización urgente para un proyecto. ¿Cuál es el precio?"></textarea>
+                </div>
+
+                <div class="expected-result">
+                    <h3>✅ ¿Qué debería pasar?</h3>
+                    <ul>
+                        <li><span class="status-indicator green"></span>Notificación del sistema aparece</li>
+                        <li><span class="status-indicator green"></span>Se abre WhatsApp Web con mensaje pre-llenado</li>
+                        <li><span class="status-indicator green"></span>Se abre cliente de Email</li>
+                        <li><span class="status-indicator green"></span>Estadísticas se actualizan en el popup</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h2>🔒 Test 2: Seguridad - Campo Password</h2>
+                
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" name="usuario" placeholder="usuario123">
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña (Escribe "urgente" aquí)</label>
+                    <input type="password" name="password" placeholder="Escribe 'urgente' aquí">
+                </div>
+
+                <div class="form-group">
+                    <label>Comentario</label>
+                    <textarea name="comentario" placeholder="Ahora escribe 'urgente' aquí"></textarea>
+                </div>
+
+                <div class="expected-result">
+                    <h3>✅ Resultado Esperado (Seguridad):</h3>
+                    <ul>
+                        <li><span class="status-indicator green"></span>NO detecta "urgente" en el campo password</li>
+                        <li><span class="status-indicator green"></span>SÍ detecta "urgente" en el campo comentario</li>
+                        <li><span class="status-indicator green"></span>La contraseña NUNCA aparece en el mensaje</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h2>🎯 Test 3: Múltiples Keywords</h2>
+                
+                <div class="form-group">
+                    <label>Asunto</label>
+                    <input type="text" name="asunto" placeholder="Consulta urgente sobre cotización">
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción Detallada</label>
+                    <textarea name="descripcion" placeholder="Quiero comprar 100 unidades. Necesito cotización urgente y saber el precio final."></textarea>
+                </div>
+
+                <div class="expected-result">
+                    <h3>✅ Con Múltiples Keywords:</h3>
+                    <ul>
+                        <li><span class="status-indicator green"></span>Detecta: "urgente", "cotización", "comprar", "precio"</li>
+                        <li><span class="status-indicator green"></span>Prioriza por nivel (Alta > Media > Baja)</li>
+                        <li><span class="status-indicator green"></span>Ejecuta todas las acciones configuradas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h2>⚡ Test 4: Contenteditable (Editores Rich Text)</h2>
+                
+                <div class="form-group">
+                    <label>Editor de Texto (Contenteditable)</label>
+                    <div contenteditable="true" style="border: 2px solid #e5e7eb; padding: 12px; border-radius: 8px; min-height: 100px; background: white;">
+                        Escribe aquí con keywords como <strong>urgente</strong> o <em>cotización</em>...
+                    </div>
+                </div>
+
+                <div class="expected-result">
+                    <h3>✅ Para Editores Rich Text:</h3>
+                    <ul>
+                        <li><span class="status-indicator green"></span>Detecta texto en elementos contenteditable</li>
+                        <li><span class="status-indicator green"></span>Funciona con editores como Medium, Notion, etc.</li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+
+        <div class="test-footer">
+            <h3 style="margin-bottom: 20px; color: #667eea;">🔍 Verificación Manual</h3>
+            <p style="margin-bottom: 20px; color: #666;">
+                Después de escribir en los campos, verifica:
+            </p>
+            <button onclick="window.open('chrome://extensions/', '_blank')">
+                🔧 Abrir Extensiones de Chrome
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Agregar indicadores visuales de actividad
+        const inputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea, [contenteditable]');
+        
+        inputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const value = input.value || input.textContent;
+                const keywords = ['urgente', 'cotización', 'comprar', 'precio', 'presupuesto'];
+                
+                let found = false;
+                keywords.forEach(keyword => {
+                    if (value.toLowerCase().includes(keyword)) {
+                        found = true;
+                    }
+                });
+
+                if (found) {
+                    input.style.borderColor = '#10b981';
+                    input.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.1)';
+                } else {
+                    input.style.borderColor = '#e5e7eb';
+                    input.style.boxShadow = 'none';
+                }
+            });
+        });
+
+        // Log en consola para debug
+        console.log('%c🚀 Sale Assistant Test Form Loaded', 'font-size: 20px; color: #667eea; font-weight: bold');
+        console.log('%cEscribe en los campos y observa la consola del background worker', 'font-size: 14px; color: #666');
+    </script>
+</body>
+</html>
+

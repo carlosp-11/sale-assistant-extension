@@ -21,20 +21,49 @@
         
         <div id="keywordList" class="keyword-list"></div>
         
-        <div class="add-keyword">
-          <input type="text" id="newKeyword" placeholder="Nueva palabra clave">
-          <select id="keywordPriority">
-            <option value="high">Alta Prioridad</option>
-            <option value="medium" selected>Media Prioridad</option>
-            <option value="low">Baja Prioridad</option>
-          </select>
-          <div class="action-checkboxes">
-            <label><input type="checkbox" id="actionWhatsApp" checked> WhatsApp</label>
-            <label><input type="checkbox" id="actionEmail" checked> Email</label>
+        <div class="add-keyword-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="newKeyword">Palabra Clave *</label>
+              <input type="text" id="newKeyword" placeholder="Ej: urgente, cotización">
+            </div>
+            <div class="form-group">
+              <label for="keywordPriority">Prioridad</label>
+              <select id="keywordPriority">
+                <option value="high">Alta</option>
+                <option value="medium" selected>Media</option>
+                <option value="low">Baja</option>
+              </select>
+            </div>
           </div>
-          <input type="tel" id="keywordWhatsappNumber" placeholder="Número WhatsApp específico (opcional)">
-          <textarea id="keywordCustomMessage" placeholder="Mensaje personalizado (opcional)" rows="2"></textarea>
-          <button id="addKeyword" class="btn btn-primary">+ Agregar</button>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Acciones a Ejecutar *</label>
+              <div class="action-checkboxes">
+                <label><input type="checkbox" id="actionWhatsApp" checked> 💬 WhatsApp</label>
+                <label><input type="checkbox" id="actionEmail" checked> 📧 Email</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="keywordWhatsappNumber">Número WhatsApp Específico (Opcional)</label>
+              <input type="tel" id="keywordWhatsappNumber" placeholder="+5491112345678">
+              <small>Si está vacío, usa el número por defecto de la sección WhatsApp</small>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="keywordCustomMessage">Mensaje Personalizado (Opcional)</label>
+              <textarea id="keywordCustomMessage" placeholder="Escribe un mensaje específico para esta palabra clave..." rows="3"></textarea>
+              <small>Si está vacío, usa el mensaje estándar con los datos del formulario</small>
+            </div>
+          </div>
+
+          <button id="addKeyword" class="btn btn-primary btn-large">+ Agregar Palabra Clave</button>
         </div>
       </section>
 
