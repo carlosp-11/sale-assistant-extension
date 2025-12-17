@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sale Assistant</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 Sale Assistant</h1>
+      <div class="status" id="status">
+        <span class="status-indicator"></span>
+        <span class="status-text">Activo</span>
+      </div>
+    </header>
+
+    <section class="toggle-section">
+      <label class="switch">
+        <input type="checkbox" id="toggleActive" checked>
+        <span class="slider"></span>
+      </label>
+      <span>Activar/Desactivar Monitor</span>
+    </section>
+
+    <section class="stats">
+      <h2>Estadísticas de Hoy</h2>
+      <div class="stat-grid">
+        <div class="stat-item">
+          <div class="stat-number" id="formsDetected">0</div>
+          <div class="stat-label">Formularios</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="keywordsFound">0</div>
+          <div class="stat-label">Keywords</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="actionsExecuted">0</div>
+          <div class="stat-label">Acciones</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="recent-activity">
+      <h2>Actividad Reciente</h2>
+      <ul id="activityList">
+        <li class="empty-state">No hay actividad reciente</li>
+      </ul>
+    </section>
+
+    <footer>
+      <button id="openOptions" class="btn btn-primary">
+        ⚙️ Configuración
+      </button>
+      <button id="clearHistory" class="btn btn-secondary">
+        🗑️ Limpiar
+      </button>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+

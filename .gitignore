@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+
+# Build files
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Package files
+*.zip
+*.crx
+*.pem
+
+# Test coverage
+coverage/
+.nyc_output/
+

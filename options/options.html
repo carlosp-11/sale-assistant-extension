@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sale Assistant - Configuración</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚙️ Configuración de Sale Assistant</h1>
+      <p>Personaliza el comportamiento del asistente de ventas</p>
+    </header>
+
+    <div class="content">
+      <!-- Palabras Clave -->
+      <section class="section">
+        <h2>🔍 Palabras Clave</h2>
+        <p class="description">Define las palabras clave que activarán las acciones automáticas</p>
+        
+        <div id="keywordList" class="keyword-list"></div>
+        
+        <div class="add-keyword">
+          <input type="text" id="newKeyword" placeholder="Nueva palabra clave">
+          <select id="keywordPriority">
+            <option value="high">Alta Prioridad</option>
+            <option value="medium" selected>Media Prioridad</option>
+            <option value="low">Baja Prioridad</option>
+          </select>
+          <div class="action-checkboxes">
+            <label><input type="checkbox" id="actionWhatsApp" checked> WhatsApp</label>
+            <label><input type="checkbox" id="actionEmail" checked> Email</label>
+          </div>
+          <button id="addKeyword" class="btn btn-primary">+ Agregar</button>
+        </div>
+      </section>
+
+      <!-- WhatsApp -->
+      <section class="section">
+        <h2>💬 WhatsApp</h2>
+        <p class="description">Números de WhatsApp donde se enviarán las alertas (formato: +5491112345678)</p>
+        
+        <div id="whatsappList" class="contact-list"></div>
+        
+        <div class="add-contact">
+          <input type="tel" id="newWhatsapp" placeholder="+5491112345678">
+          <input type="text" id="whatsappName" placeholder="Nombre (opcional)">
+          <button id="addWhatsapp" class="btn btn-primary">+ Agregar</button>
+        </div>
+      </section>
+
+      <!-- Email -->
+      <section class="section">
+        <h2>📧 Email</h2>
+        <p class="description">Direcciones de correo donde se enviarán las alertas</p>
+        
+        <div id="emailList" class="contact-list"></div>
+        
+        <div class="add-contact">
+          <input type="email" id="newEmail" placeholder="ejemplo@correo.com">
+          <input type="text" id="emailName" placeholder="Nombre (opcional)">
+          <button id="addEmail" class="btn btn-primary">+ Agregar</button>
+        </div>
+      </section>
+
+      <!-- Notificaciones -->
+      <section class="section">
+        <h2>🔔 Notificaciones</h2>
+        <p class="description">Configuración de notificaciones del sistema</p>
+        
+        <div class="option-row">
+          <label>
+            <input type="checkbox" id="enableNotifications" checked>
+            Activar notificaciones de escritorio
+          </label>
+        </div>
+        
+        <div class="option-row">
+          <label>
+            <input type="checkbox" id="enableSound" checked>
+            Reproducir sonido al detectar palabra clave
+          </label>
+        </div>
+      </section>
+
+      <!-- Acciones Avanzadas -->
+      <section class="section">
+        <h2>⚡ Acciones Avanzadas</h2>
+        <p class="description">Configuración avanzada del comportamiento</p>
+        
+        <div class="option-row">
+          <label>
+            Modo de activación:
+            <select id="activationMode">
+              <option value="auto">Automático (sin confirmación)</option>
+              <option value="confirm">Solicitar confirmación</option>
+              <option value="manual">Solo notificar</option>
+            </select>
+          </label>
+        </div>
+        
+        <div class="option-row">
+          <label>
+            Retraso antes de ejecutar acción:
+            <input type="number" id="actionDelay" value="2" min="0" max="30"> segundos
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <button id="saveConfig" class="btn btn-success">💾 Guardar Configuración</button>
+      <button id="resetConfig" class="btn btn-danger">🔄 Restaurar Valores Predeterminados</button>
+    </footer>
+
+    <div id="notification" class="notification hidden"></div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
+
