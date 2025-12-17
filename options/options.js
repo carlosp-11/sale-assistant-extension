@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Event Listeners
   addKeywordBtn.addEventListener('click', addKeyword);
-  addWhatsappBtn.addEventListener('click', addWhatsappNumber);
+  addWhatsappBtn.addEventListener('click', addWhatsAppNumber);
   addEmailBtn.addEventListener('click', addEmailAddress);
   saveConfigBtn.addEventListener('click', saveConfig);
   resetConfigBtn.addEventListener('click', resetConfig);
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (e.key === 'Enter') addKeyword();
   });
   newWhatsapp.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') addWhatsappNumber();
+    if (e.key === 'Enter') addWhatsAppNumber();
   });
   newEmail.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') addEmailAddress();
