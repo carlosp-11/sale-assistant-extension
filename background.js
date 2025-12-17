@@ -252,7 +252,9 @@ class SaleAssistant {
           keyword: keyword.text,
           count: found.length,
           actions: keyword.actions,
-          priority: keyword.priority
+          priority: keyword.priority,
+          whatsappNumber: keyword.whatsappNumber || null,
+          customMessage: keyword.customMessage || null
         });
       }
     });
