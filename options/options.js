@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Funciones
   async function loadConfig() {
+    console.log('[Options] Cargando configuración...');
     try {
       const data = await chrome.storage.sync.get([
         'keywords',
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         'activationMode',
         'actionDelay'
       ]);
+      console.log('[Options] Configuración cargada:', data);
 
       // Cargar keywords
       if (data.keywords && data.keywords.length > 0) {
@@ -245,37 +247,49 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function addWhatsAppNumber() {
+    console.log('[Options] Intentando agregar número WhatsApp');
     const number = newWhatsapp.value.trim();
+    console.log('[Options] Número ingresado:', number);
+    
     if (!number) {
+      console.warn('[Options] Número vacío');
       showNotification('Por favor ingresa un número', 'error');
       return;
     }
 
     // Validar formato básico
     if (!number.match(/^\+?\d{10,15}$/)) {
+      console.warn('[Options] Formato inválido:', number);
       showNotification('Formato inválido. Usa: +5491112345678', 'error');
       return;
     }
 
     try {
+      console.log('[Options] Obteniendo números existentes...');
       const data = await chrome.storage.sync.get(['whatsappNumbers']);
       const numbers = data.whatsappNumbers || [];
+      console.log('[Options] Números actuales:', numbers);
       
       if (numbers.includes(number)) {
+        console.warn('[Options] Número ya existe');
         showNotification('Este número ya existe', 'error');
         return;
       }
 
       numbers.push(number);
+      console.log('[Options] Guardando números:', numbers);
       await chrome.storage.sync.set({ whatsappNumbers: numbers });
+      console.log('[Options] Números guardados exitosamente');
+      
       renderWhatsAppNumbers(numbers);
       
       newWhatsapp.value = '';
       whatsappName.value = '';
       showNotification('Número agregado', 'success');
+      console.log('[Options] ✅ Número agregado exitosamente');
     } catch (error) {
-      console.error('Error agregando número:', error);
-      showNotification('Error agregando número', 'error');
+      console.error('[Options] ❌ Error agregando número:', error);
+      showNotification('Error agregando número: ' + error.message, 'error');
     }
   }
 
@@ -294,37 +308,49 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function addEmailAddress() {
+    console.log('[Options] Intentando agregar email');
     const email = newEmail.value.trim();
+    console.log('[Options] Email ingresado:', email);
+    
     if (!email) {
+      console.warn('[Options] Email vacío');
       showNotification('Por favor ingresa un email', 'error');
       return;
     }
 
     // Validar formato de email
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      console.warn('[Options] Formato de email inválido:', email);
       showNotification('Formato de email inválido', 'error');
       return;
     }
 
     try {
+      console.log('[Options] Obteniendo emails existentes...');
       const data = await chrome.storage.sync.get(['emailAddresses']);
       const emails = data.emailAddresses || [];
+      console.log('[Options] Emails actuales:', emails);
       
       if (emails.includes(email)) {
+        console.warn('[Options] Email ya existe');
         showNotification('Este email ya existe', 'error');
         return;
       }
 
       emails.push(email);
+      console.log('[Options] Guardando emails:', emails);
       await chrome.storage.sync.set({ emailAddresses: emails });
+      console.log('[Options] Emails guardados exitosamente');
+      
       renderEmails(emails);
       
       newEmail.value = '';
       emailName.value = '';
       showNotification('Email agregado', 'success');
+      console.log('[Options] ✅ Email agregado exitosamente');
     } catch (error) {
-      console.error('Error agregando email:', error);
-      showNotification('Error agregando email', 'error');
+      console.error('[Options] ❌ Error agregando email:', error);
+      showNotification('Error agregando email: ' + error.message, 'error');
     }
   }
 
